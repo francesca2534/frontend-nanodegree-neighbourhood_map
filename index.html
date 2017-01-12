@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Neighbourhood Map</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+
+	<body>
+		<div id="floating-panel">
+			<select id="menu" data-bind="options: $root.availableTypes, optionsValue: 'type', value: selectedChoice, optionsText: 'type'"></select>
+			<br>
+			<button id="filter", data-bind="click: filterMarkers">Filter Markers</button>
+		    <div data-bind="foreach: filteredLocations">
+		        <label id="list" data-bind='text: title,'></label>
+		        <br>
+		    </div>
+		</div>
+		<div id="map">
+		</div>
+		<div class="wikipedia-container">
+	        <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
+	        <ul id="wikipedia-links">Click any wiki button and find relevant Wikipedia articles here!</ul>
+	    </div>
+		<script async defer
+		    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1utJQbGGJeDq5fVwXBinG2qLzhKovmH0&v=3&callback=initMap">
+		</script>		
+		<script type='text/javascript' src='js/knockout.js'></script>
+		<script type='text/javascript' src='js/jquery.min.js'></script>
+		<script type='text/javascript' src='js/script.js'></script>
+
+	</body>
+
+</html>

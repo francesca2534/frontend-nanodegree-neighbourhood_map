@@ -1,0 +1,43 @@
+#map {
+	height: 100%;
+}
+
+html,
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	z-index: 0;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+#floating-panel {
+	position: absolute;
+	left: 0%;
+	z-index: 1;
+	height:90%;
+	background-color: #e7e7e7;
+	padding: 5px;
+	border: 1px solid black;
+	text-align: center;
+	color: black;
+}
+
+.wikipedia-container {
+    float:right;
+    width:290px;
+ 	padding:10px;
+    top: 10px;
+    left: 1000px;
+    margin-right: 10px;
+    background-color: rgba(255,255,255,0.7);
+    z-index: 2;
+    position: absolute;
+}
+
+#submit, #filter {
+	text-align: center;
+	margin: 0 auto;
+	background-color: #008CBA;
+	color: white;
+}
