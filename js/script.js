@@ -20,7 +20,6 @@ var locations = [
 	{title: 'Mount Carmel', type: 'Education', location: {lat: 8.882745699999999 , lng: 76.5656204}, tag: 'Kollam', marker: markers[8]}
 ];
 len = locations.length;
-//InfoWindow property
 
 function initMap() {
     // Constructor creates a new map.
@@ -66,7 +65,6 @@ function initMap() {
 		bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds);
-
 }
 
 function wiki(tag) {
@@ -93,8 +91,6 @@ function wiki(tag) {
 	})
 	return false;
 }
-
-
 
 var Places = function (location) {
 	var self = this;
@@ -160,7 +156,6 @@ function viewModel(marker) {
 
 }
 
-
 //Filters the markers when button is clicked
 function filterMarkers() {
 	var len = locations.length;
@@ -175,7 +170,7 @@ function filterMarkers() {
 }
 
 
-
+//InfoWindow property
 function populateInfoWindow(marker, infowindow) {
 	// Checking whether infowindow is already opened on this marker.
 	if (infowindow.marker != marker) {
