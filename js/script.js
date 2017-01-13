@@ -103,7 +103,7 @@ var Places = function (location) {
 function viewModel(marker) {
 	var self = this; 
 
-	//Clicking on list item sets animation
+	//Clicking on list item sets animation and info
 	self.itemClick = function() {
 		self.locations().forEach(function(location, i) {
 			location.marker.setAnimation(null);
