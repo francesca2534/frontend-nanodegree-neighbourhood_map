@@ -1,5 +1,5 @@
 #Neighbourhood Map Project
-The project is done using the knockout framework.
+The project is done using the knockout framework. Google Map API and Wikipedia API are also used.
 
 ###Open the index.html file
 
