@@ -11,15 +11,18 @@
 		<div id="floating-panel">
 			<select id="menu" data-bind="options: $root.availableTypes, optionsValue: 'type', value: selectedChoice, optionsText: 'type'"></select>
 			<br>
-			<button id="filter", data-bind="click: filterMarkers">Filter Markers</button>
 		    <div data-bind="foreach: filteredLocations">
-		        <label id="list" data-bind='text: title,'></label>
+		        <li data-bind='text: title, click: $root.itemClick'></li>
 		        <br>
 		    </div>
 		</div>
 		<div id="map">
 		</div>
-		<div class="wikipedia-container">
+		<div id="info">
+			<h3 id="title"></h3>
+			<p>Distance from Kollam railway station: <span id="dist"></span></p>
+		</div>
+		<div id="responsive" class="wikipedia-container">
 	        <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
 	        <ul id="wikipedia-links">Click any wiki button and find relevant Wikipedia articles here!</ul>
 	    </div>

@@ -1,7 +1,6 @@
-
 var len;
 var desiredType = ""; 
-var icon = 'https://maps.google.com/mapfiles/kml/shapes/'
+var icon = 'https://maps.google.com/mapfiles/kml/shapes/';
 var map;
 
 //Array to accept markers
@@ -9,21 +8,21 @@ var markers = [];
 
 //Array for locations
 var locations = [
-	{title: 'Pullichira Church', type: 'Churches', location: {lat: 8.847406400000001 , lng: 76.6625299}, tag: 'Mayyanad', marker: markers[0]},
-	{title: 'Kottiyam Church', type: 'Churches', location: {lat: 8.8620263 , lng: 76.67197999999999}, tag: 'Kottiyam', marker: markers[1]},
-	{title: 'Kakottumoola Church', type: 'Churches', location: {lat: 8.8306047 , lng: 76.6539951}, tag: 'Mayyanad', marker: markers[2]},
-	{title: 'Kollam Beach', type: 'Entertainment', location: {lat: 8.8756778 , lng: 76.58891630000001}, tag: 'Kollam Beach', marker: markers[3]},
-	{title: 'Carnival Cinemas', type: 'Entertainment', location: {lat: 8.889529, lng: 76.5858222}, tag: 'Carnival Cinemas', marker: markers[4]},
-	{title: 'Holy Cross', type: 'Health', location: {lat: 8.861639199999999 , lng: 76.67340369999999}, tag: 'Kottiyam', marker: markers[5]},
-	{title: 'KIMS', type: 'Health', location: {lat: 8.8643903 , lng: 76.68133019999999}, tag: 'Kottiyam', marker: markers[6]},
-	{title: 'Auxilium English Medium', type: 'Education', location: {lat: 8.8538558 , lng: 76.67503239999999}, tag: 'Kottiyam', marker: markers[7]},
-	{title: 'Mount Carmel', type: 'Education', location: {lat: 8.882745699999999 , lng: 76.5656204}, tag: 'Kollam', marker: markers[8]}
+	{title: 'Pullichira Church', type: 'Churches', location: {lat: 8.847406400000001 , lng: 76.6625299}, tag: 'Mayyanad', dist:'12.7 km'},
+	{title: 'Kottiyam Church', type: 'Churches', location: {lat: 8.8620263 , lng: 76.67197999999999}, tag: 'Kottiyam', dist: '9.6 km'},
+	{title: 'Kakottumoola Church', type: 'Churches', location: {lat: 8.8306047 , lng: 76.6539951}, tag: 'Mayyanad', dist: '14.2'},
+	{title: 'Kollam Beach', type: 'Entertainment', location: {lat: 8.8756778 , lng: 76.58891630000001}, tag: 'Kollam Beach', dist: '2.8 km'},
+	{title: 'Carnival Cinemas', type: 'Entertainment', location: {lat: 8.889529, lng: 76.5858222}, tag: 'Carnival Cinemas', dist: '1.7 km'},
+	{title: 'Holy Cross', type: 'Health', location: {lat: 8.861639199999999 , lng: 76.67340369999999}, tag: 'Kottiyam', dist: '9.8 km'},
+	{title: 'KIMS', type: 'Health', location: {lat: 8.8643903 , lng: 76.68133019999999}, tag: 'Kottiyam', dist: '10.3 km'},
+	{title: 'Auxilium English Medium', type: 'Education', location: {lat: 8.8538558 , lng: 76.67503239999999}, tag: 'Kottiyam', dist: '10.7 km'},
+	{title: 'Mount Carmel', type: 'Education', location: {lat: 8.882745699999999 , lng: 76.5656204}, tag: 'Kollam', dist: '4.2 km'}
 ];
+
 len = locations.length;
 
 function initMap() {
     // Constructor creates a new map.
-    //console.log("initMap")
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 8.8504004, lng: 76.66292899999999},
       zoom: 10
@@ -49,24 +48,26 @@ function initMap() {
 		});
 
 		// Push the marker to our array of markers.
-		locations[i].marker = marker;
 		markers.push(marker);
 		// Create an onclick event to open an infowindow at each marker.
 		marker.addListener('click', (function(markerCopy) {
 			return function() {
-			  populateInfoWindow(this, largeInfowindow);
-			  if (markerCopy.getAnimation() !== null) {
-			    markerCopy.setAnimation(null);
-			  } else {
-			    markerCopy.setAnimation(google.maps.Animation.BOUNCE);
-			  }
-			}
+				populateInfoWindow(this, largeInfowindow);
+				if (markerCopy.getAnimation() !== null) {
+				markerCopy.setAnimation(null);
+				} else {
+				markerCopy.setAnimation(google.maps.Animation.BOUNCE);
+				}
+			};
 		})(marker));
 		bounds.extend(markers[i].position);
     }
-    map.fitBounds(bounds);
+    map.fitBounds(bounds);    
+    // To make sure that the markers exist before we attach them to the location objects
+    ko.applyBindings(new viewModel());
 }
 
+//Runs when wiki button is pressed
 function wiki(tag) {
 	var $wikiElem = $('#wikipedia-links');
 	$wikiElem.text("");//Clears the content.
@@ -80,7 +81,7 @@ function wiki(tag) {
 		dataType: "jsonp",
 		url: wikiUrl,
 		success: function(response) {
-			articleList = response[1]
+			articleList = response[1];
 			for (i = 0; i <articleList.length; i++) {
 				articleStr = articleList[i];
 				var url = "https://en.wikipedia.org/wiki/" + articleStr;
@@ -88,7 +89,7 @@ function wiki(tag) {
 			}
 			clearTimeout(wikiRequestTimeout);
 		}
-	})
+	});
 	return false;
 }
 
@@ -96,18 +97,21 @@ var Places = function (location) {
 	var self = this;
 	self.title = location.title;
 	self.type = location.type;
-}
-
-var locationMarkers = function (marker) {
-	var self = this;
-	self.title = marker.title;
-	self.type = marker.type;
-}
-
-ko.applyBindings(new viewModel());
+	self.dist = location.dist;
+};
 
 function viewModel(marker) {
 	var self = this; 
+
+	//Clicking on list item sets animation
+	self.itemClick = function() {
+		self.locations().forEach(function(location, i) {
+			location.marker.setAnimation(null);
+		});
+		this.marker.setAnimation(google.maps.Animation.BOUNCE);
+		document.getElementById("dist").innerHTML = this.dist;
+		document.getElementById("title").innerHTML = this.title;
+	};
 
 	self.availableTypes = [
 	    { type: "All"},
@@ -117,7 +121,7 @@ function viewModel(marker) {
   	    { type: "Education"}
 	];
 
-	self.selectedChoice = ko.observable("");
+	self.selectedChoice = ko.observable("All");
 
 	self.locations = ko.observableArray([
 		new Places(locations[0]),
@@ -131,44 +135,39 @@ function viewModel(marker) {
 		new Places(locations[8])
 	]);
 
+	//Attaching markers to the location
+	self.locations().forEach(function(location, i) {
+		location.marker = markers[i];
+	});
+
 	//Filters the list on screen as per the selection on dropdown list
 	self.filteredLocations = ko.computed(function() {
 		desiredType = self.selectedChoice();		
 		len = self.locations().length;
 
-		if (desiredType=="All") { 	
+
+		if (desiredType=="All") { 
+			self.locations().forEach(function(location) {
+				location.marker.setVisible(true); //Setting the marker to be visible
+			})	;
 			return self.locations();
 		}
 
 		else {	
-			//filterMarkers(desiredType);
-	        return ko.utils.arrayFilter(self.locations(), function(locations) {
-	            if (locations.type == desiredType) {
-	            	//locations.marker.setVisible(true);
-	            	return locations;
-	            }
+	        return ko.utils.arrayFilter(self.locations(), function(location) {
+	            if (location.type == desiredType) {
+	            	location.marker.setVisible(true);
+	   				return location;         
+	   			}
 	            else {
-	            	locations.marker.setVisible();
-	            }
+	            	location.marker.setVisible(false); //Marker hidden
+	            }	            	
+	            
 	        });		
 		}
-	})
+	});
 
 }
-
-//Filters the markers when button is clicked
-function filterMarkers() {
-	var len = locations.length;
-	for (var i = 0; i < len; i++) {
-		if ((locations[i].type==desiredType)||(desiredType=='All')) { //Displays marker according to the desired type
-			//locations[i].marker.setVisible(true);
-		}
-		else {
-			//locations[i].marker.setVisible(false);
-		}
-	}
-}
-
 
 //InfoWindow property
 function populateInfoWindow(marker, infowindow) {
