@@ -34,6 +34,22 @@ li: hover {
 	cursor: pointer;
 }
 
+largeInfowindow {
+	max-height: 250px;
+	overflow-y: scroll;
+}
+.style-elements {
+	text-align: center;
+	text-decoration: underline;
+	text-decoration-style: dashed;
+}
+
+.window-content {
+	text-align: center;
+	font-weight: bold;
+	font-style: italic;
+	text-transform: uppercase;
+}
 .wikipedia-container {
 	overflow-y: scroll;
     float:right;

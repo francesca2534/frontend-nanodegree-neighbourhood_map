@@ -18,21 +18,17 @@
 		</div>
 		<div id="map">
 		</div>
-		<div id="info">
-			<h3 id="title"></h3>
-			<p>Distance from Kollam railway station: <span id="dist"></span></p>
+		<div id="info" data-bind="visible: myInfo().length>0">
+			 <h3 data-bind='text: myInfo()'></h3><span>away from Kollam railway station</span>
 		</div>
-		<div id="responsive" class="wikipedia-container">
-	        <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
-	        <ul id="wikipedia-links">Click any wiki button and find relevant Wikipedia articles here!</ul>
-	    </div>
-		<script async defer
-		    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1utJQbGGJeDq5fVwXBinG2qLzhKovmH0&v=3&callback=initMap">
-		</script>		
+		
 		<script type='text/javascript' src='js/knockout.js'></script>
 		<script type='text/javascript' src='js/jquery.min.js'></script>
 		<script type='text/javascript' src='js/script.js'></script>
-
+		<script async defer
+		    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1utJQbGGJeDq5fVwXBinG2qLzhKovmH0&v=3&callback=initMap"
+		    onerror="errorfunction()">
+		</script>
 	</body>
 
 </html>
