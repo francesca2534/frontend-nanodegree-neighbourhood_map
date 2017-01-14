@@ -1,5 +1,5 @@
 var len, largeInfowindow;
-var desiredType = ""; 
+var desiredType = ''; 
 var icon = 'https://maps.google.com/mapfiles/kml/shapes/';
 var map;
 
@@ -74,22 +74,23 @@ function wiki(tag, title) {
 	var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + tag + '&format=json&callback=wikiCallback';
 	//Set timeout to avoid error
 	var wikiRequestTimeout = setTimeout(function() {
-		$wikiElem.text('failed to get wikipedia resources');
+		largeInfowindow.setContent('failed to get wikipedia resources');
 	},8000);
 
 	$.ajax( {
 		dataType: "jsonp",
 		url: wikiUrl,
 		success: function(response) {
-			articleList = response[1];
-			var content = '<p class="window-content">' + title + '</p><hr><p class="style-elements">Wikipedia links</p>' ; // Common to all marker infowindows
-			for (i = 0; i <articleList.length; i++) {
-				articleStr = articleList[i];
-				var url = "https://en.wikipedia.org/wiki/" + articleStr;
-				var listElem = "abc";
-				content += '<li><a href="' + url + '"target="_blank"' + '>' + articleStr + '</a></li>'; /* Adds all the wiki links to content.
-																										 * Target attribute enables opening link in new tab */
-			}																							 
+			if (response.length >0) {
+				var articleList = response[1];
+				var content = '<p class="window-content">' + title + '</p><hr><p class="style-elements">Wikipedia links</p>' ; // Common to all marker infowindows
+				var listLength = articleList.length;
+				for (var i = 0; i <listLength; i++) {
+					var articleStr = articleList[i];
+					var url = "https://en.wikipedia.org/wiki/" + articleStr;
+					content += '<li><a href="' + url + '"target="_blank"' + '>' + articleStr + '</a></li>'; /* Adds all the wiki links to content.*/																									
+				}																							/* Target attribute enables opening link in new tab */
+			}																																										 
 			largeInfowindow.setContent(content);		// Add 'content' to the infowindow
 			clearTimeout(wikiRequestTimeout);
 		}
@@ -114,7 +115,7 @@ function viewModel() {
 		self.locations().forEach(function(location) { //Sets all marker animation to null
 			setTimeout(function(){					  //Timeout for marker
 				location.marker.setAnimation(null);
-			},1000)
+			},1000);
 		});
 		self.myInfo([]);	// Empty the array
 		self.myInfo.push(this.title, this.dist);
@@ -126,11 +127,11 @@ function viewModel() {
 	self.myInfo = ko.observableArray([]);
 
 	self.availableTypes = [
-	    { type: "All"},
-  	    { type: "Churches"},
-  	    { type: "Entertainment"},
-  	    { type: "Health"},
-  	    { type: "Education"}
+	    { type: 'All'},
+  	    { type: 'Churches'},
+  	    { type: 'Entertainment'},
+  	    { type: 'Health'},
+  	    { type: 'Education'}
 	];
 
 	self.selectedChoice = ko.observable("All");
@@ -157,8 +158,8 @@ function viewModel() {
 			location.marker.setAnimation(google.maps.Animation.BOUNCE); 			//Sets animation on marker
 			setTimeout(function(){													//Timeout for marker
 				location.marker.setAnimation(null);
-			},1000)
-		})
+			},1000);
+		});
 	});
 
 	//Filters the list on screen as per the selection on dropdown list
@@ -166,7 +167,7 @@ function viewModel() {
 		desiredType = self.selectedChoice();		
 		len = self.locations().length;
 
-		if (desiredType=="All") { 		//if All is selected all markers are made visible
+		if (desiredType=='All') { 		//if All is selected all markers are made visible
 			self.locations().forEach(function(location) {
 				location.marker.setVisible(true); //Setting the marker to be visible
 			});
@@ -193,7 +194,6 @@ function populateInfoWindow(marker, infowindow) {
 	// Checking whether infowindow is already opened on this marker.
 	if (infowindow.marker != marker) {
 	  infowindow.marker = marker;
-	  tagger = marker.tag;
 	  infowindow.open(map, marker);
 	  // Removing animation on close click.
 	  infowindow.addListener('closeclick',function(){
@@ -203,5 +203,5 @@ function populateInfoWindow(marker, infowindow) {
 }
 
 function errorfunction() {
-	window.alert("Error occured. Try again later")
+	window.alert('Error occured. Try again later');
 }
